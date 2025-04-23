@@ -1,0 +1,6 @@
+{
+  "appId": "com.ecosense.recyclingapp",
+  "appName": "Recycling App",
+  "webDir": "public",
+  "bundledWebRuntime": false
+}

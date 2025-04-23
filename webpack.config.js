@@ -1,5 +1,6 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (_, argv) => ({
     mode: argv.mode ?? 'development',
@@ -25,4 +26,10 @@ module.exports = (_, argv) => ({
         minimize: argv.mode === 'production',
         minimizer: [new TerserPlugin()],
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'index.html',   // the source file at project root
+            filename: 'index.html'    // emitted into /public
+        })
+    ]
 });

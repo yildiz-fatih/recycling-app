@@ -6,13 +6,18 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --mode development",
     "build": "webpack --mode production",
-    "clean": "rimraf public/bundle.js"
+    "clean": "rimraf public/bundle.js",
+    "sync": "npm run build && npx cap sync",
+    "android": "npm run build && npx cap sync android && npx cap open android",
+    "ios": "npm run build && npx cap sync ios && npx cap open ios"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@capacitor/android": "^7.2.0",
+    "@capacitor/ios": "^7.2.0",
     "@tensorflow-models/coco-ssd": "^2.2.3",
     "@tensorflow/tfjs": "^4.22.0",
     "core-js": "^3.41.0",
@@ -23,7 +28,10 @@
   "devDependencies": {
     "@babel/core": "^7.26.10",
     "@babel/preset-env": "^7.26.9",
+    "@capacitor/cli": "^7.2.0",
+    "@capacitor/core": "^7.2.0",
     "babel-loader": "^10.0.0",
+    "html-webpack-plugin": "^5.6.3",
     "terser-webpack-plugin": "^5.3.14",
     "webpack": "^5.99.6",
     "webpack-cli": "^6.0.1",
