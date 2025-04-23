@@ -1,0 +1,12 @@
+# Node
+node_modules/
+
+# Build output
+public/bundle.js
+public/*.map
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
