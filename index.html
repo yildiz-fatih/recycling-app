@@ -5,15 +5,16 @@
   <meta charset="utf-8">
   <title>Recycling App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="App.css" />
 </head>
 
 <body>
-  <main class="app">
+  <!-- ----- MAIN PAGES ---------------------------------------------------- -->
+  <main class="app" id="camera-page">
     <section class="intro">
-      <h1 role="image" aria-label="earth emoji" class="earth">🌏</h1>
-      <h1>Can I recycle that?</h1>
-      <h2>Use machine learning and image recognition to help you recycle!</h2>
-      <p>(This website will need access to your camera)</p>
+      <h1 role="image" aria-label="recycling emoji" class="icon">♻️</h1>
+      <h1>Can I recycle this?</h1>
+      <p>(This app requires camera access)</p>
       <button class="start-button blinking">Initializing...</button>
     </section>
     <section class="feed">
@@ -33,6 +34,40 @@
       </section>
     </section>
   </main>
+
+  <!-- -------------- HOME -------------------------------------------------- -->
+  <main class="page hide" id="home-page">
+    <h1 class="page-label" style="margin:0">Welcome&nbsp;to&nbsp;EcoSense 🌱</h1>
+  </main>
+
+  <!-- -------------- ACCOUNT ---------------------------------------------- -->
+  <main class="page hide" id="account-page">
+    <section style="text-align:center">
+      <h2 class="page-label" style="margin-bottom:1rem">Account</h2>
+
+      <!-- reuse existing “start-button” styling so it already matches your theme -->
+      <button class="start-button">Log&nbsp;In</button>
+      <button class="start-button" style="margin-left:1rem">Sign&nbsp;Up</button>
+    </section>
+  </main>
+
+  <!-- -------------- MAP --------------------------------------------------- -->
+  <main class="page hide" id="map-page" style="padding:0">
+    <!-- dead-simple Google Maps embed (no API key needed) -->
+    <iframe title="EcoSense Map" src="https://www.google.com/maps?q=0,0&z=2&output=embed"
+      style="border:0;width:100%;height:100%;" loading="lazy" allowfullscreen>
+    </iframe>
+  </main>
+
+
+  <!-- ----- BOTTOM NAV ---------------------------------------------------- -->
+  <nav class="bottom-nav">
+    <button class="tab active" data-target="camera-page">📷</button>
+    <button class="tab" data-target="home-page">🏠</button>
+    <button class="tab" data-target="account-page">👤</button>
+    <button class="tab" data-target="map-page">🗺️</button>
+  </nav>
+
   <script src="bundle.js" charset="utf-8"></script>
 </body>
 

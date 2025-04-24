@@ -25,12 +25,12 @@ h1 {
     color: white;
 }
 
-h1.earth {
+h1.icon {
     font-size: 6em;
     margin-bottom: 0;
 }
 
-h1.earth:empty {
+h1.icon:empty {
     display: none;
 }
 
@@ -234,4 +234,67 @@ video {
     #next {
         font-size: 20px;
     }
+}
+
+/* ---------- bottom-nav ---------- */
+.bottom-nav {
+    position: fixed;
+    bottom: env(safe-area-inset-bottom, 0);
+    /* keeps iOS happy */
+    left: 0;
+    width: 100%;
+    height: 56px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(30, 41, 72, .85);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+.tab {
+    flex: 1 1 0;
+    font-size: 1.6rem;
+    background: none;
+    border: none;
+    outline: none;
+    color: white;
+    cursor: pointer;
+    transition: transform .15s ease;
+}
+
+.tab.active,
+.tab:active {
+    color: rgb(199, 255, 131);
+    /* matches your accent green */
+    transform: translateY(-2px);
+}
+
+/* ---------- new page stubs ---------- */
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(rgb(55, 73, 130), rgb(30, 41, 72));
+    font-family: "Open Sans", "Helvetica";
+    color: rgb(199, 255, 131);
+}
+
+.page-label {
+    font-size: 2rem;
+}
+
+.hide {
+    display: none !important;
+}
+
+/* give camera page a bit of bottom padding so buttons never sit
+     behind the nav on very small screens */
+#camera-page {
+    padding-bottom: 56px;
 }
