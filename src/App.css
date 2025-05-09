@@ -298,3 +298,7 @@ video {
 #camera-page {
     padding-bottom: 56px;
 }
+
+.flip-horizontally {
+    transform: scaleX(-1);
+}

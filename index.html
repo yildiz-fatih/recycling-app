@@ -42,14 +42,31 @@
 
   <!-- -------------- ACCOUNT ---------------------------------------------- -->
   <main class="page hide" id="account-page">
-    <section style="text-align:center">
+    <section id="auth-section" style="text-align:center">
       <h2 class="page-label" style="margin-bottom:1rem">Account</h2>
 
-      <!-- reuse existing “start-button” styling so it already matches your theme -->
-      <button class="start-button">Log&nbsp;In</button>
-      <button class="start-button" style="margin-left:1rem">Sign&nbsp;Up</button>
+      <input id="email" class="start-button" type="email" placeholder="Email" style="display:block;margin:.5rem auto">
+      <input id="password" class="start-button" type="password" placeholder="Password"
+        style="display:block;margin:.5rem auto">
+
+      <button id="signup-btn" class="start-button" style="margin-right:.5rem">
+        Sign Up
+      </button>
+      <button id="login-btn" class="start-button">Log In</button>
+
+      <p id="auth-msg" style="color:#fff;margin-top:.75rem"></p>
+    </section>
+
+    <section id="profile-section" class="hide" style="text-align:center">
+      <h2 class="page-label" style="margin-bottom:1rem">Profile</h2>
+
+      <p id="user-email"></p>
+      <p id="user-xp"></p>
+
+      <button id="logout-btn" class="start-button">Log Out</button>
     </section>
   </main>
+
 
   <!-- -------------- MAP --------------------------------------------------- -->
   <main class="page hide" id="map-page" style="padding:0">
