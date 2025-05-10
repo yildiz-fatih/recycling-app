@@ -1,10 +1,16 @@
+// src/App.js ----------------------------------------------------------------
 import ImageRecognition from './ImageRecognition.js';
 import { hideElement, showElement } from './utils/utils.js';
 import find from 'lodash/find';
-import { yellowBinItems } from './data/yellowBinList';
-import { redBinItems } from './data/redBinList';
 
-// NEW – helper that writes scans to Firestore and bumps XP
+import { blueBinItems } from './data/blueBinItems';
+import { yellowBinItems } from './data/yellowBinItems';
+import { greenBinItems } from './data/greenBinItems';
+import { brownBinItems } from './data/brownBinItems';
+import { greyBinItems } from './data/greyBinItems';
+import { redBinItems } from './data/redBinItems';
+
+// helper: records scans + bumps XP
 import { recordScan } from './scanRecorder.js';
 
 import './App.css';
@@ -21,14 +27,10 @@ export default class App {
         this.feedSection = document.getElementsByClassName('feed')[0];
 
         this.recognitionFeature = new ImageRecognition();
-
-        // NEW – remember the item currently being asked about
-        this.currentItemName = null;
+        this.currentItemName = null;   // remember last prediction
     }
 
-    /* ---------------------------------------------------------------------- */
-    /*  Init                                                                  */
-    /* ---------------------------------------------------------------------- */
+    /* -------- Init -------- */
     init = () => {
         this.recognitionFeature.loadModel().then(() => {
             this.startButton.classList.remove('blinking');
@@ -37,9 +39,7 @@ export default class App {
         });
     };
 
-    /* ---------------------------------------------------------------------- */
-    /*  Camera / prediction flow                                              */
-    /* ---------------------------------------------------------------------- */
+    /* -------- Camera / prediction flow -------- */
     start() {
         hideElement(this.introBlock);
         showElement(this.feedSection);
@@ -53,7 +53,7 @@ export default class App {
             .catch(() => {
                 hideElement(this.guessButton);
                 this.resultDiv.innerHTML =
-                    'Webcam not available. This demo requires webcam access.';
+                    'Webcam not available. This demo requires camera access.';
             });
     }
 
@@ -72,20 +72,17 @@ export default class App {
         });
     };
 
-    /* ---------------------------------------------------------------------- */
-    /*  Classification logic                                                  */
-    /* ---------------------------------------------------------------------- */
+    /* -------- Classification logic -------- */
     classifyItem = item => {
-        const yellowItemFound = find(yellowBinItems, y => y === item);
-        const redItemFound = find(redBinItems, r => r === item);
+        const found = (arr) => !!find(arr, x => x === item);
 
-        if (yellowItemFound) {
-            this.displayButtons('yellow');
-        } else if (redItemFound) {
-            this.displayButtons('red');
-        } else {
-            this.displayButtons('none');
-        }
+        if (found(blueBinItems)) this.displayButtons('blue');
+        else if (found(yellowBinItems)) this.displayButtons('yellow');
+        else if (found(greenBinItems)) this.displayButtons('green');
+        else if (found(brownBinItems)) this.displayButtons('brown');
+        else if (found(greyBinItems)) this.displayButtons('grey');
+        else if (found(redBinItems)) this.displayButtons('red');
+        else this.displayButtons('none');
     };
 
     displayButtons = color => {
@@ -95,30 +92,47 @@ export default class App {
         const noButton = document.getElementById('no');
 
         yesButton.onclick = () => this.displayClassification(color);
-        noButton.onclick = () => this.predict();
+        noButton.onclick = () => this.predict();        // re-scan on “No”
     };
 
-    /* ---------------------------------------------------------------------- */
-    /*  Respond to user’s “Yes”                                               */
-    /* ---------------------------------------------------------------------- */
+    /* -------- Respond to user’s “Yes” -------- */
     displayClassification = color => {
         this.showClassification();
         let content;
 
         switch (color) {
+            case 'blue':
+                content = 'Recycle it! Drop into the 🔵 blue Paper & Cardboard bin.';
+                recordScan(this.currentItemName, true);
+                break;
+
             case 'yellow':
-                content = `It is recyclable! Throw it in the ${color} bin! 🎉`;
-                recordScan(this.currentItemName, true);          // ♻️ +XP
+                content = 'Recycle it! Into the 🟡 yellow Plastics & Metals bin.';
+                recordScan(this.currentItemName, true);
+                break;
+
+            case 'green':
+                content = 'Recycle it! Into the 🟢 green Glass bin.';
+                recordScan(this.currentItemName, true);
+                break;
+
+            case 'brown':
+                content = 'Compost it! 🟤 brown Organics bin.';
+                recordScan(this.currentItemName, true);
+                break;
+
+            case 'grey':
+                content = '⚫ General waste – no current recycling route.';
+                recordScan(this.currentItemName, false);
                 break;
 
             case 'red':
-                content = `It is not recyclable 😢 Throw it in the ${color} bin.`;
-                recordScan(this.currentItemName, false);         // no XP
+                content = '🔴 Hazardous item! Please take to a special drop-off.';
+                recordScan(this.currentItemName, false);
                 break;
 
             case 'none':
-                content = `Mmmm, I don't seem to know yet how to classify that but…
-        Is it made of soft plastic, aluminium, paper, glass or cardboard?`;
+                content = `Hmm, I’m not sure how to classify that yet…`;
                 this.displayLastButtons();
                 break;
 
@@ -130,9 +144,7 @@ export default class App {
         if (color !== 'none') this.showFinalMessage(content);
     };
 
-    /* ---------------------------------------------------------------------- */
-    /*  Follow-up question for unknown items                                  */
-    /* ---------------------------------------------------------------------- */
+    /* -------- Fallback Q&A for unknown items -------- */
     displayLastButtons = () => {
         showElement([this.confirmationButtons, this.resultDiv]);
 
@@ -140,23 +152,21 @@ export default class App {
         const noButton = document.getElementById('no');
 
         yesButton.onclick = () => {
-            recordScan(this.currentItemName, true);            // treat as recyclable
+            recordScan(this.currentItemName, true);
             this.showFinalMessage(
-                'You can probably throw it in the yellow bin!! 🎉'
+                'You can probably put it in the 🟡 yellow recycling bin! 🎉'
             );
         };
 
         noButton.onclick = () => {
-            recordScan(this.currentItemName, false);           // treat as trash
+            recordScan(this.currentItemName, false);
             this.showFinalMessage(
-                'Mmmm... better put it in the red bin'
+                'Better put it in ⚫ general waste for now.'
             );
         };
     };
 
-    /* ---------------------------------------------------------------------- */
-    /*  UI helpers                                                            */
-    /* ---------------------------------------------------------------------- */
+    /* -------- UI helpers -------- */
     showFinalMessage = content => {
         this.resultDiv.innerHTML = content;
         hideElement(this.confirmationButtons);

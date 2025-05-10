@@ -1,0 +1,19 @@
+export const brownBinItems = [
+    'banana',
+    'apple',
+    'orange',
+    'lemon',
+    'pineapple',
+    'strawberry',
+    'broccoli',
+    'carrot',
+    'cucumber',
+    'mushroom',
+    'bagel',
+    'pizza',
+    'cheeseburger',
+    'hotdog',
+    'sandwich',
+    'donut',
+    'bread'
+];
