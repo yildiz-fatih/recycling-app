@@ -10,7 +10,7 @@ export default class ImageRecognition {
     }
 
     loadModel = async () => {
-        this.model = await cocoSsd.load();;
+        this.model = await cocoSsd.load();
         return this.model;
     }
 

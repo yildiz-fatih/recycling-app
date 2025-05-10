@@ -128,32 +128,32 @@ export default class App {
         switch (color) {
             case 'blue':
                 content = '🔵 Blue Bin: Paper & Cardboard';
-                recordScan(this.currentItemName, true);
+                recordScan(this.currentItemName, 'blue');
                 break;
 
             case 'yellow':
                 content = '🟡 Yellow Bin: Plastics & Metals';
-                recordScan(this.currentItemName, true);
+                recordScan(this.currentItemName, 'yellow');
                 break;
 
             case 'green':
                 content = '🟢 Green Bin: Glass';
-                recordScan(this.currentItemName, true);
+                recordScan(this.currentItemName, 'green');
                 break;
 
             case 'brown':
                 content = '🟤 Brown Bin: Organics';
-                recordScan(this.currentItemName, true);
+                recordScan(this.currentItemName, 'brown');
                 break;
 
             case 'grey':
                 content = '⚫ General Waste: no recycling route';
-                recordScan(this.currentItemName, false);
+                recordScan(this.currentItemName, 'grey');
                 break;
 
             case 'red':
                 content = '🔴 Red Bin: Hazardous & Specialty';
-                recordScan(this.currentItemName, false);
+                recordScan(this.currentItemName, 'red');
                 break;
 
             case 'none':

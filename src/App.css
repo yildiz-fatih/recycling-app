@@ -270,3 +270,84 @@ h6 {
     background: rgba(255, 255, 255, .35);
     border-radius: 4px;
 }
+
+/* -------------------------------------- *
+   Account & Profile Page Styling
+ * -------------------------------------- */
+
+/* Center the sections vertically & horizontally */
+#account-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+/* Common card for auth & profile */
+#auth-section,
+#profile-section {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--radius);
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Page titles */
+#auth-section .page-label,
+#profile-section .page-label {
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+/* Inputs */
+#auth-section input,
+#profile-section input {
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text-light);
+}
+
+/* Buttons */
+#auth-section button,
+#profile-section button {
+    width: 100%;
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--accent);
+    color: var(--text-light);
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .1s ease, background .15s ease;
+}
+
+#auth-section button:hover,
+#profile-section button:hover {
+    background: var(--green-bin);
+}
+
+/* Status & info text */
+#auth-msg {
+    margin-top: 0.75rem;
+    color: #ff7373;
+    text-align: center;
+}
+
+#profile-section p {
+    margin: 0.5rem 0;
+    line-height: 1.4;
+}
+
+/* Link “Tap to add” prompt */
+#user-fullname {
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--yellow-bin);
+}

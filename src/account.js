@@ -31,7 +31,11 @@ $('signup-btn').addEventListener('click', async () => {
             fullName: '',
             xp: 0,
             totalScans: 0,
+            blueCount: 0,
             yellowCount: 0,
+            greenCount: 0,
+            brownCount: 0,
+            greyCount: 0,
             redCount: 0
         });
     } catch (err) {
@@ -82,13 +86,30 @@ onAuthStateChanged(auth, user => {
         const userRef = doc(db, 'users', user.uid);
         onSnapshot(userRef, snap => {
             const d = snap.data() || {};
-            $('user-email').textContent = `Logged in as ${user.email}`;
+            $('user-email').textContent =
+                `Logged in as ${user.email}`;
+
             $('user-fullname').textContent =
                 d.fullName ? d.fullName : 'Tap to add your name';
-            $('total-scans').textContent = `Items scanned: ${d.totalScans ?? 0}`;
-            $('yellow-count').textContent = `Yellow-bin items: ${d.yellowCount ?? 0}`;
-            $('red-count').textContent = `Red-bin items: ${d.redCount ?? 0}`;
-            $('user-xp').textContent = `XP: ${d.xp ?? 0}`;
+
+            $('total-scans').textContent =
+                `Items scanned: ${d.totalScans ?? 0}`;
+
+            $('blue-count').textContent =
+                `Blue-bin items:   ${d.blueCount ?? 0}`;
+            $('yellow-count').textContent =
+                `Yellow-bin items: ${d.yellowCount ?? 0}`;
+            $('green-count').textContent =
+                `Green-bin items:  ${d.greenCount ?? 0}`;
+            $('brown-count').textContent =
+                `Brown-bin items:  ${d.brownCount ?? 0}`;
+            $('grey-count').textContent =
+                `Grey-bin items:   ${d.greyCount ?? 0}`;
+            $('red-count').textContent =
+                `Red-bin items:    ${d.redCount ?? 0}`;
+
+            $('user-xp').textContent =
+                `XP: ${d.xp ?? 0}`;
 
             // reset edit UI
             show($('user-fullname'));
