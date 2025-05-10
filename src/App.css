@@ -140,8 +140,7 @@ video {
     margin: 0 auto 0 auto;
 }
 
-#yes,
-#no,
+#choice-buttons button,
 #next {
     border-radius: .3em;
     padding: 1em 2em;
@@ -152,7 +151,7 @@ video {
     width: fit-content;
 }
 
-#yes {
+#choice-buttons button:not(:last-child) {
     margin-right: 1em;
 }
 

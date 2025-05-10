@@ -1,4 +1,4 @@
-// src/App.js ----------------------------------------------------------------
+// src/App.js --------------------------------------------------------------
 import ImageRecognition from './ImageRecognition.js';
 import { hideElement, showElement } from './utils/utils.js';
 import find from 'lodash/find';
@@ -17,7 +17,8 @@ import './App.css';
 
 export default class App {
     constructor() {
-        this.confirmationButtons = document.getElementById('confirmation-buttons');
+        // DOM refs --------------------------------------------------------
+        this.choiceButtonsDiv = document.getElementById('choice-buttons');
         this.classificationDiv = document.getElementById('recycling-classification');
         this.doneButton = document.getElementById('next');
         this.resultDiv = document.getElementById('result');
@@ -26,11 +27,12 @@ export default class App {
         this.introBlock = document.getElementsByClassName('intro')[0];
         this.feedSection = document.getElementsByClassName('feed')[0];
 
+        // Feature helpers ------------------------------------------------
         this.recognitionFeature = new ImageRecognition();
-        this.currentItemName = null;   // remember last prediction
+        this.currentItemName = null;   // remember last confirmed prediction
     }
 
-    /* -------- Init -------- */
+    /* ------------------------- Init ----------------------------------- */
     init = () => {
         this.recognitionFeature.loadModel().then(() => {
             this.startButton.classList.remove('blinking');
@@ -39,8 +41,8 @@ export default class App {
         });
     };
 
-    /* -------- Camera / prediction flow -------- */
-    start() {
+    /* ------------------- Camera / prediction flow --------------------- */
+    start = () => {
         hideElement(this.introBlock);
         showElement(this.feedSection);
 
@@ -55,48 +57,72 @@ export default class App {
                 this.resultDiv.innerHTML =
                     'Webcam not available. This demo requires camera access.';
             });
-    }
+    };
 
     predict = () => {
+        this.resultDiv.innerHTML = 'Scanning…';
+        hideElement(this.guessButton);
+
         this.recognitionFeature.runPredictions().then(predictions => {
-            if (!predictions.length) return;
+            if (!predictions.length) {
+                this.resultDiv.innerHTML = 'I could not detect anything. Try again?';
+                showElement(this.guessButton);
+                return;
+            }
 
-            const item = predictions[0].class.split(',')[0];
-            this.currentItemName = item;
+            const guesses = predictions
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 3)
+                .map(p => p.class.split(',')[0]);
 
-            this.resultDiv.innerText = '';
-            this.resultDiv.innerHTML = `Is it a ${item}?`;
-            hideElement([this.classificationDiv, this.guessButton]);
-
-            this.classifyItem(item);
+            this.showGuessOptions(guesses);
         });
     };
 
-    /* -------- Classification logic -------- */
-    classifyItem = item => {
+    /* ------------------ Guess‑list UI helpers ------------------------- */
+    showGuessOptions = (guesses) => {
+        this.choiceButtonsDiv.innerHTML = '';
+
+        const makeBtn = (label, handler) => {
+            const btn = document.createElement('button');
+            btn.textContent = label;
+            btn.onclick = handler;
+            this.choiceButtonsDiv.appendChild(btn);
+        };
+
+        guesses.forEach(name => makeBtn(name, () => this.handleGuess(name)));
+        makeBtn('None of these', this.handleNoneOfThese);
+
+        this.resultDiv.innerHTML = 'Is it one of these?';
+        showElement([this.resultDiv, this.choiceButtonsDiv]);
+    };
+
+    handleGuess = (itemName) => {
+        this.currentItemName = itemName;
+        hideElement(this.choiceButtonsDiv);
+        this.classifyItem(itemName);
+    };
+
+    handleNoneOfThese = () => {
+        hideElement(this.choiceButtonsDiv);
+        this.resultDiv.innerHTML = '';
+        showElement(this.guessButton);
+    };
+
+    /* ------------------- Classification logic ------------------------ */
+    classifyItem = (item) => {
         const found = (arr) => !!find(arr, x => x === item);
-
-        if (found(blueBinItems)) this.displayButtons('blue');
-        else if (found(yellowBinItems)) this.displayButtons('yellow');
-        else if (found(greenBinItems)) this.displayButtons('green');
-        else if (found(brownBinItems)) this.displayButtons('brown');
-        else if (found(greyBinItems)) this.displayButtons('grey');
-        else if (found(redBinItems)) this.displayButtons('red');
-        else this.displayButtons('none');
+        if (found(blueBinItems)) this.displayClassification('blue');
+        else if (found(yellowBinItems)) this.displayClassification('yellow');
+        else if (found(greenBinItems)) this.displayClassification('green');
+        else if (found(brownBinItems)) this.displayClassification('brown');
+        else if (found(greyBinItems)) this.displayClassification('grey');
+        else if (found(redBinItems)) this.displayClassification('red');
+        else this.displayClassification('none');
     };
 
-    displayButtons = color => {
-        showElement([this.confirmationButtons, this.resultDiv]);
-
-        const yesButton = document.getElementById('yes');
-        const noButton = document.getElementById('no');
-
-        yesButton.onclick = () => this.displayClassification(color);
-        noButton.onclick = () => this.predict();        // re-scan on “No”
-    };
-
-    /* -------- Respond to user’s “Yes” -------- */
-    displayClassification = color => {
+    /* ------------------- Show result message ------------------------- */
+    displayClassification = (color) => {
         this.showClassification();
         let content;
 
@@ -132,49 +158,26 @@ export default class App {
                 break;
 
             case 'none':
-                content = `Hmm, I’m not sure how to classify that yet…`;
-                this.displayLastButtons();
+                content = 'Hmm, I’m not sure how to classify that yet…';
                 break;
 
             default:
-                break;
+                content = '';
         }
 
-        this.resultDiv.innerHTML = content;
-        if (color !== 'none') this.showFinalMessage(content);
+        this.showFinalMessage(content);
     };
 
-    /* -------- Fallback Q&A for unknown items -------- */
-    displayLastButtons = () => {
-        showElement([this.confirmationButtons, this.resultDiv]);
-
-        const yesButton = document.getElementById('yes');
-        const noButton = document.getElementById('no');
-
-        yesButton.onclick = () => {
-            recordScan(this.currentItemName, true);
-            this.showFinalMessage(
-                'You can probably put it in the 🟡 yellow recycling bin! 🎉'
-            );
-        };
-
-        noButton.onclick = () => {
-            recordScan(this.currentItemName, false);
-            this.showFinalMessage(
-                'Better put it in ⚫ general waste for now.'
-            );
-        };
-    };
-
-    /* -------- UI helpers -------- */
-    showFinalMessage = content => {
+    /* ------------------- UI helpers ---------------------------------- */
+    showFinalMessage = (content) => {
         this.resultDiv.innerHTML = content;
-        hideElement(this.confirmationButtons);
+        hideElement(this.choiceButtonsDiv);
         showElement(this.doneButton);
 
         this.doneButton.onclick = () => {
             showElement(this.guessButton);
             hideElement([this.classificationDiv, this.doneButton, this.resultDiv]);
+            this.resultDiv.innerHTML = '';
         };
     };
 
