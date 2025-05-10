@@ -1,314 +1,272 @@
+/*--------------------------------------*
+  Global styles & variables
+*--------------------------------------*/
 :root {
-    /* Green‑centric palette */
-    --green-bg-start: #245C37;
-    /* lighter centre */
-    --green-bg-end: #152F23;
-    /* darker edges */
-    --accent-green: #C8FF8C;
-    /* headings, active states, buttons */
-    --text-primary: #FFFFFF;
-    --text-secondary: #C8FF8C;
-    --nav-bg: rgba(21, 47, 35, 0.85);
-    --nav-border: rgba(255, 255, 255, 0.1);
-    --glass-bg: rgba(21, 47, 35, 0.6);
-    /* classification strip */
+    --blue-bin: #0074d9;
+    /* paper */
+    --yellow-bin: #ffdc00;
+    /* plastics & metals */
+    --green-bin: #2ecc40;
+    /* glass */
+    --brown-bin: #b5651d;
+    /* organics */
+    --grey-bin: #6c757d;
+    /* general */
+    --red-bin: #ff4136;
+    /* hazardous */
+
+    --accent: var(--green-bin);
+    --bg-dark: #1e1e1e;
+    --bg-light: #f8f9fa;
+    --card-bg: rgba(255, 255, 255, .08);
+    --text-light: #ffffff;
+    --text-dark: #212529;
+
+    --nav-height: 64px;
+    --radius: 12px;
+}
+
+/* Reset / basic layout */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    height: 100%;
+    background: var(--bg-dark);
+    color: var(--text-light);
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
-    margin: 0;
-}
-
-/* ---------------- Root layout ------------- */
-.app {
-    position: absolute;
-    background: radial-gradient(var(--green-bg-start), var(--green-bg-end));
-    width: 100%;
-    height: 100%;
-    margin: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-h1,
-h2 {
-    text-align: center;
-    font-family: "Open Sans", "Helvetica";
-    margin: .5em auto;
-}
-
-h1 {
-    font-weight: 800;
-    color: var(--text-primary);
-}
-
-h1.icon {
-    font-size: 6em;
-    margin-bottom: 0;
-}
-
-h1.icon:empty {
-    display: none;
-}
-
-h2 {
-    font-weight: 300;
-    color: var(--accent-green);
-    font-size: .9em;
-    width: 85%;
-}
-
-.intro p {
-    font-weight: 200;
-    font-size: .6em;
-    width: 80%;
-    text-align: center;
-    font-family: "Open Sans", "Helvetica";
-    margin: 0 auto;
-    color: var(--text-secondary);
-}
-
-.app .intro {
-    justify-content: center;
-    align-items: center;
-}
-
-.intro .start-button {
-    display: block;
-    margin: 2em auto;
-    border: 1px solid var(--text-primary);
-    background: none;
-    border-radius: .3em;
-    padding: .5em 1em;
-    color: var(--text-primary);
-    font-size: .8em;
-}
-
-.blinking {
-    animation: 2s infinite ease-in-out blink;
-}
-
-@keyframes blink {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-/* -------------- Camera feed -------------- */
-.feed {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-}
-
-.feed #webcam-frame {
-    margin: 0;
-    padding: 0;
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-}
-
-video {
-    margin: 0;
-    padding: 0;
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-}
-
-.classification-content {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    z-index: 10;
-    background: var(--glass-bg);
-    padding: 1em 0;
-}
-
-/* -------------- Buttons ------------------ */
-#guess-button {
-    background: none;
-    border: 2px solid var(--accent-green);
-    border-radius: .3em;
-    padding: 1em 2em;
-    color: var(--accent-green);
-    font-size: 14px;
-    display: block;
-    margin: 0 auto 0 auto;
-}
-
-#confirmation-buttons {
-    display: none;
-    width: fit-content;
-    margin: 0 auto;
-}
-
-#choice-buttons button,
-#next {
-    border-radius: .3em;
-    padding: 1em 2em;
-    background: none;
-    border: 2px solid var(--accent-green);
-    font-weight: 400;
-    color: var(--accent-green);
-    width: fit-content;
-}
-
-#choice-buttons button:not(:last-child) {
-    margin-right: 1em;
-}
-
-#result,
-#recycling-classification {
-    font-family: "Open Sans", "Helvetica";
-    display: block;
-    margin: 0 auto;
-    width: fit-content;
-    color: var(--text-primary);
-}
-
-#recycling-classification {
-    font-size: 20px;
-}
-
-#result {
-    padding: 0 1em 1em 1em;
-}
-
-#result:empty {
-    display: none;
-}
-
-#next {
-    display: none;
-    margin: 0 auto;
-    font-size: 14px;
-}
-
-@media(min-width:600px) {
-    h1 {
-        font-size: 2em;
-    }
-
-    h2 {
-        font-size: 1em;
-        width: 70%;
-    }
-
-    .intro p {
-        font-size: .8em;
-    }
-
-    .intro .start-button {
-        font-size: .8em;
-    }
-}
-
-@media(min-width:800px) {
-    h1 {
-        font-size: 3em;
-    }
-
-    h2 {
-        font-size: 1.3em;
-        width: 100%;
-    }
-
-    .intro p {
-        font-size: .9em;
-    }
-
-    .intro .start-button {
-        font-size: 1em;
-    }
-
-    #guess-button,
-    #result,
-    #recycling-classification {
-        font-size: 20px;
-    }
-
-    #yes,
-    #no,
-    #next {
-        font-size: 20px;
-    }
-}
-
-/* -------------- Bottom Navigation -------- */
-.bottom-nav {
-    position: fixed;
-    bottom: env(safe-area-inset-bottom, 0);
-    left: 0;
-    width: 100%;
-    height: 56px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: var(--nav-bg);
-    backdrop-filter: blur(6px);
-    border-top: 1px solid var(--nav-border);
-}
-
-.tab {
-    flex: 1 1 0;
-    font-size: 1.6rem;
-    background: none;
-    border: none;
-    outline: none;
-    color: var(--text-primary);
-    cursor: pointer;
-    transition: transform .15s ease;
-}
-
-.tab.active,
-.tab:active {
-    color: var(--accent-green);
-    transform: translateY(-2px);
-}
-
-/* -------------- Other Pages -------------- */
-.page {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(var(--green-bg-start), var(--green-bg-end));
-    font-family: "Open Sans", "Helvetica";
-    color: var(--accent-green);
-}
-
-.page-label {
-    font-size: 2rem;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .hide {
     display: none !important;
 }
 
-/* Padding so camera‑page content never hides behind nav on very small screens */
-#camera-page {
-    padding-bottom: 56px;
+main.app,
+main.page {
+    flex: 1 0 auto;
+    /* leave room for nav */
+    height: calc(100vh - var(--nav-height));
+    overflow-y: auto;
+    padding: 1rem;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
+}
+
+.page-label {
+    font-size: 1.5rem;
+}
+
+/*--------------------------------------*
+  Bottom navigation bar
+*--------------------------------------*/
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    background: rgba(0, 0, 0, .85);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    backdrop-filter: blur(6px);
+    z-index: 999;
+}
+
+.bottom-nav .tab {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.75rem;
+    cursor: pointer;
+    transition: transform .15s ease, color .15s ease;
+}
+
+.bottom-nav .tab.active {
+    color: var(--accent);
+    transform: translateY(-4px);
+}
+
+.bottom-nav .tab:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/*--------------------------------------*
+  Intro / Start screen (Camera page)
+*--------------------------------------*/
+.intro {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+}
+
+.icon {
+    font-size: 3rem;
+}
+
+.start-button {
+    padding: .75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    background: var(--yellow-bin);
+    cursor: pointer;
+    transition: transform .1s ease;
+}
+
+.start-button:active {
+    transform: scale(.97);
+}
+
+/* blinking util */
+@keyframes blink {
+
+    0%,
+    49% {
+        opacity: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 0;
+    }
+}
+
+.blinking {
+    animation: blink 1s step-start infinite;
+}
+
+/*--------------------------------------*
+  Camera feed & prediction UI
+*--------------------------------------*/
+.feed {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#webcam-frame {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#webcam {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* flip horizontally when class added via JS (for selfie cam) */
 .flip-horizontally {
     transform: scaleX(-1);
+}
+
+.classification-content {
+    position: absolute;
+    bottom: calc(var(--nav-height) + 1rem);
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+    padding: 1rem;
+    text-align: center;
+    pointer-events: none;
+    /* allow taps through except on buttons */
+}
+
+.classification-content button,
+#next {
+    pointer-events: auto;
+}
+
+#guess-button,
+#next {
+    padding: .65rem 1.25rem;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--accent);
+    color: var(--text-light);
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .1s ease;
+}
+
+#next {
+    display: none;
+}
+
+#choice-buttons button {
+    margin: .25rem;
+    padding: .5rem 1rem;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    border: none;
+    border-radius: var(--radius);
+    font-size: .9rem;
+    cursor: pointer;
+    transition: background .15s ease;
+}
+
+#choice-buttons button:hover {
+    background: #e2e6ea;
+}
+
+#result {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+}
+
+/*--------------------------------------*
+  Map page
+*--------------------------------------*/
+#map-page iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/*--------------------------------------*
+  Utilities
+*--------------------------------------*/
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, .35);
+    border-radius: 4px;
 }
