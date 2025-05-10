@@ -35,11 +35,6 @@
     </section>
   </main>
 
-  <!-- -------------- HOME -------------------------------------------------- -->
-  <main class="page hide" id="home-page">
-    <h1 class="page-label" style="margin:0">Welcome&nbsp;to&nbsp;EcoSense 🌱</h1>
-  </main>
-
   <!-- -------------- ACCOUNT ---------------------------------------------- -->
   <main class="page hide" id="account-page">
     <section id="auth-section" style="text-align:center">
@@ -61,10 +56,21 @@
       <h2 class="page-label" style="margin-bottom:1rem">Profile</h2>
 
       <p id="user-email"></p>
+
+      <!-- name -->
+      <p id="user-fullname" style="cursor:pointer"></p>
+      <input id="name-input" class="start-button hide" placeholder="Full name" style="margin:.5rem auto">
+      <button id="save-name-btn" class="start-button hide">Save name</button>
+
+      <!-- counters -->
       <p id="user-xp"></p>
+      <p id="total-scans"></p>
+      <p id="yellow-count"></p>
+      <p id="red-count"></p>
 
       <button id="logout-btn" class="start-button">Log Out</button>
     </section>
+
   </main>
 
 
@@ -80,7 +86,6 @@
   <!-- ----- BOTTOM NAV ---------------------------------------------------- -->
   <nav class="bottom-nav">
     <button class="tab active" data-target="camera-page">📷</button>
-    <button class="tab" data-target="home-page">🏠</button>
     <button class="tab" data-target="account-page">👤</button>
     <button class="tab" data-target="map-page">🗺️</button>
   </nav>

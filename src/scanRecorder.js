@@ -1,3 +1,4 @@
+// src/scanRecorder.js ------------------------------------------------------
 import { auth, db } from './firebase';
 import {
     collection, addDoc, serverTimestamp,
@@ -5,17 +6,19 @@ import {
 } from 'firebase/firestore';
 
 /**
- * Call after the user presses “Yes”.
- * @param {string} itemName  e.g. "bottle"
- * @param {boolean} recyclable
+ * Record a confirmed scan + bump XP and category counters
+ * @param {string}  itemName
+ * @param {boolean} recyclable   true  → yellow bin, false → red bin
  */
 export async function recordScan(itemName, recyclable) {
     const user = auth.currentUser;
-    if (!user) return;            // ignore anonymous scans
+    if (!user) return;                      // ignore anonymous scans
 
-    const xpDelta = recyclable ? 10 : 0;   // tweak value as you like
+    const xpDelta = recyclable ? 10 : 0;
+    const yellowDelta = recyclable ? 1 : 0;
+    const redDelta = recyclable ? 0 : 1;
 
-    // 1) store the scan
+    // 1) store this scan
     await addDoc(collection(db, 'scans'), {
         userId: user.uid,
         itemName,
@@ -23,10 +26,11 @@ export async function recordScan(itemName, recyclable) {
         ts: serverTimestamp()
     });
 
-    // 2) bump XP
-    if (xpDelta) {
-        await updateDoc(doc(db, 'users', user.uid), {
-            xp: increment(xpDelta)
-        });
-    }
+    // 2) bump counters on the user doc
+    await updateDoc(doc(db, 'users', user.uid), {
+        xp: increment(xpDelta),
+        totalScans: increment(1),
+        yellowCount: increment(yellowDelta),
+        redCount: increment(redDelta)
+    });
 }
