@@ -1,4 +1,3 @@
-// src/App.js --------------------------------------------------------------
 import ImageRecognition from './ImageRecognition.js';
 import { hideElement, showElement } from './utils/utils.js';
 import find from 'lodash/find';
@@ -128,37 +127,37 @@ export default class App {
 
         switch (color) {
             case 'blue':
-                content = 'Recycle it! Drop into the 🔵 blue Paper & Cardboard bin.';
+                content = '🔵 Blue Bin: Paper & Cardboard';
                 recordScan(this.currentItemName, true);
                 break;
 
             case 'yellow':
-                content = 'Recycle it! Into the 🟡 yellow Plastics & Metals bin.';
+                content = '🟡 Yellow Bin: Plastics & Metals';
                 recordScan(this.currentItemName, true);
                 break;
 
             case 'green':
-                content = 'Recycle it! Into the 🟢 green Glass bin.';
+                content = '🟢 Green Bin: Glass';
                 recordScan(this.currentItemName, true);
                 break;
 
             case 'brown':
-                content = 'Compost it! 🟤 brown Organics bin.';
+                content = '🟤 Brown Bin: Organics';
                 recordScan(this.currentItemName, true);
                 break;
 
             case 'grey':
-                content = '⚫ General waste – no current recycling route.';
+                content = '⚫ General Waste: no recycling route';
                 recordScan(this.currentItemName, false);
                 break;
 
             case 'red':
-                content = '🔴 Hazardous item! Please take to a special drop-off.';
+                content = '🔴 Red Bin: Hazardous & Specialty';
                 recordScan(this.currentItemName, false);
                 break;
 
             case 'none':
-                content = 'Hmm, I’m not sure how to classify that yet…';
+                content = '❓ Not recognized';
                 break;
 
             default:

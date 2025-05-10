@@ -1,10 +1,27 @@
+:root {
+    /* Green‑centric palette */
+    --green-bg-start: #245C37;
+    /* lighter centre */
+    --green-bg-end: #152F23;
+    /* darker edges */
+    --accent-green: #C8FF8C;
+    /* headings, active states, buttons */
+    --text-primary: #FFFFFF;
+    --text-secondary: #C8FF8C;
+    --nav-bg: rgba(21, 47, 35, 0.85);
+    --nav-border: rgba(255, 255, 255, 0.1);
+    --glass-bg: rgba(21, 47, 35, 0.6);
+    /* classification strip */
+}
+
 body {
     margin: 0;
 }
 
+/* ---------------- Root layout ------------- */
 .app {
     position: absolute;
-    background: radial-gradient(rgb(55, 73, 130), rgb(30, 41, 72));
+    background: radial-gradient(var(--green-bg-start), var(--green-bg-end));
     width: 100%;
     height: 100%;
     margin: 0;
@@ -22,7 +39,7 @@ h2 {
 
 h1 {
     font-weight: 800;
-    color: white;
+    color: var(--text-primary);
 }
 
 h1.icon {
@@ -36,21 +53,19 @@ h1.icon:empty {
 
 h2 {
     font-weight: 300;
-    color: rgb(199, 255, 131);
+    color: var(--accent-green);
     font-size: .9em;
     width: 85%;
 }
 
 .intro p {
-    font-weight: 400;
+    font-weight: 200;
     font-size: .6em;
-    width: 60%;
+    width: 80%;
     text-align: center;
     font-family: "Open Sans", "Helvetica";
-    width: 80%;
     margin: 0 auto;
-    color: rgb(104, 172, 250);
-    font-weight: 200;
+    color: var(--text-secondary);
 }
 
 .app .intro {
@@ -61,11 +76,11 @@ h2 {
 .intro .start-button {
     display: block;
     margin: 2em auto;
-    border: 1px solid white;
+    border: 1px solid var(--text-primary);
     background: none;
     border-radius: .3em;
     padding: .5em 1em;
-    color: white;
+    color: var(--text-primary);
     font-size: .8em;
 }
 
@@ -87,6 +102,7 @@ h2 {
     }
 }
 
+/* -------------- Camera feed -------------- */
 .feed {
     display: none;
     position: absolute;
@@ -119,16 +135,17 @@ video {
     bottom: 0;
     width: 100%;
     z-index: 10;
-    background: rgba(30, 41, 72, .6);
+    background: var(--glass-bg);
     padding: 1em 0;
 }
 
+/* -------------- Buttons ------------------ */
 #guess-button {
     background: none;
-    border: 2px solid white;
+    border: 2px solid var(--accent-green);
     border-radius: .3em;
     padding: 1em 2em;
-    color: white;
+    color: var(--accent-green);
     font-size: 14px;
     display: block;
     margin: 0 auto 0 auto;
@@ -137,7 +154,7 @@ video {
 #confirmation-buttons {
     display: none;
     width: fit-content;
-    margin: 0 auto 0 auto;
+    margin: 0 auto;
 }
 
 #choice-buttons button,
@@ -145,9 +162,9 @@ video {
     border-radius: .3em;
     padding: 1em 2em;
     background: none;
-    border: 2px solid rgb(199, 255, 131);
+    border: 2px solid var(--accent-green);
     font-weight: 400;
-    color: rgb(199, 255, 131);
+    color: var(--accent-green);
     width: fit-content;
 }
 
@@ -161,7 +178,7 @@ video {
     display: block;
     margin: 0 auto;
     width: fit-content;
-    color: white;
+    color: var(--text-primary);
 }
 
 #recycling-classification {
@@ -219,10 +236,7 @@ video {
         font-size: 1em;
     }
 
-    #guess-button {
-        font-size: 20px;
-    }
-
+    #guess-button,
     #result,
     #recycling-classification {
         font-size: 20px;
@@ -235,20 +249,19 @@ video {
     }
 }
 
-/* ---------- bottom-nav ---------- */
+/* -------------- Bottom Navigation -------- */
 .bottom-nav {
     position: fixed;
     bottom: env(safe-area-inset-bottom, 0);
-    /* keeps iOS happy */
     left: 0;
     width: 100%;
     height: 56px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: rgba(30, 41, 72, .85);
+    background: var(--nav-bg);
     backdrop-filter: blur(6px);
-    border-top: 1px solid rgba(255, 255, 255, .1);
+    border-top: 1px solid var(--nav-border);
 }
 
 .tab {
@@ -257,19 +270,18 @@ video {
     background: none;
     border: none;
     outline: none;
-    color: white;
+    color: var(--text-primary);
     cursor: pointer;
     transition: transform .15s ease;
 }
 
 .tab.active,
 .tab:active {
-    color: rgb(199, 255, 131);
-    /* matches your accent green */
+    color: var(--accent-green);
     transform: translateY(-2px);
 }
 
-/* ---------- new page stubs ---------- */
+/* -------------- Other Pages -------------- */
 .page {
     position: absolute;
     top: 0;
@@ -279,9 +291,9 @@ video {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(rgb(55, 73, 130), rgb(30, 41, 72));
+    background: radial-gradient(var(--green-bg-start), var(--green-bg-end));
     font-family: "Open Sans", "Helvetica";
-    color: rgb(199, 255, 131);
+    color: var(--accent-green);
 }
 
 .page-label {
@@ -292,8 +304,7 @@ video {
     display: none !important;
 }
 
-/* give camera page a bit of bottom padding so buttons never sit
-     behind the nav on very small screens */
+/* Padding so camera‑page content never hides behind nav on very small screens */
 #camera-page {
     padding-bottom: 56px;
 }
