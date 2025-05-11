@@ -1,40 +1,53 @@
-import * as cocoSsd from "@tensorflow-models/coco-ssd";
+// src/ImageRecognition.js
+import * as mobilenet from '@tensorflow-models/mobilenet';
 import { Webcam } from './utils/webcam';
 import { isMobile } from './utils/utils';
 
 export default class ImageRecognition {
     constructor() {
-        this.webcam;
-        this.predictions;
-        this.model;
+        this.webcam = null;
+        this.model = null;
     }
 
+    /**
+     * Load the MobileNet model.
+     */
     loadModel = async () => {
-        this.model = await cocoSsd.load();
+        this.model = await mobilenet.load();
         return this.model;
-    }
+    };
 
+    /**
+     * Initialize webcam exactly as before.
+     */
     initiateWebcam = async () => {
         this.webcam = new Webcam(document.getElementById('webcam'));
-        this.webcam.webcamElement.width = window.innerWidth
-        this.webcam.webcamElement.height = window.innerHeight
+        // size video to fill the screen
+        this.webcam.webcamElement.width = window.innerWidth;
+        this.webcam.webcamElement.height = window.innerHeight;
 
         try {
-            // If on mobile, use the back camera. Otherwise, flip the playback video.
             const facingMode = isMobile() ? 'environment' : 'user';
             if (!isMobile()) {
                 this.webcam.webcamElement.classList.add('flip-horizontally');
             }
-            await this.webcam.setup({ 'video': { facingMode: facingMode }, 'audio': false });
-            console.log('WebCam sccessfully initialized');
-        } catch (e) {
-            return e;
+            await this.webcam.setup({ video: { facingMode }, audio: false });
+            console.log('Webcam successfully initialized');
+        } catch (err) {
+            return err;
         }
-    }
+    };
 
+    /**
+     * Take the current video frame and run MobileNet classification,
+     * returning an array of { class, score } objects (top 3 by default).
+     */
     runPredictions = async () => {
-        let webcamImage = this.webcam.webcamElement;
-        this.predictions = await this.model.detect(webcamImage);
-        return this.predictions;
-    }
+        // MobileNet.classify takes the video element directly and by default returns top 3
+        const results = await this.model.classify(this.webcam.webcamElement, 3);
+        return results.map(r => ({
+            class: r.className,      // e.g. "banana"
+            score: r.probability     // e.g. 0.87
+        }));
+    };
 }

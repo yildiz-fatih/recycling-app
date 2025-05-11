@@ -2,12 +2,7 @@ import ImageRecognition from './ImageRecognition.js';
 import { hideElement, showElement } from './utils/utils.js';
 import find from 'lodash/find';
 
-import { blueBinItems } from './data/blueBinItems';
-import { yellowBinItems } from './data/yellowBinItems';
-import { greenBinItems } from './data/greenBinItems';
-import { brownBinItems } from './data/brownBinItems';
-import { greyBinItems } from './data/greyBinItems';
-import { redBinItems } from './data/redBinItems';
+import { imagenetBinMap } from './data/imagenetBinMap';
 
 // helper: records scans + bumps XP
 import { recordScan } from './scanRecorder.js';
@@ -110,15 +105,13 @@ export default class App {
 
     /* ------------------- Classification logic ------------------------ */
     classifyItem = (item) => {
-        const found = (arr) => !!find(arr, x => x === item);
-        if (found(blueBinItems)) this.displayClassification('blue');
-        else if (found(yellowBinItems)) this.displayClassification('yellow');
-        else if (found(greenBinItems)) this.displayClassification('green');
-        else if (found(brownBinItems)) this.displayClassification('brown');
-        else if (found(greyBinItems)) this.displayClassification('grey');
-        else if (found(redBinItems)) this.displayClassification('red');
-        else this.displayClassification('none');
+        // normalize to lowercase (your map keys are all lowercase)
+        const key = item.toLowerCase();
+        // look up in the map; default to 'none' if missing
+        const color = imagenetBinMap[key] || 'none';
+        this.displayClassification(color);
     };
+
 
     /* ------------------- Show result message ------------------------- */
     displayClassification = (color) => {
